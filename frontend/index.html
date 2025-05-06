@@ -1,22 +1,28 @@
-<form onsubmit="submitFeedback(event)">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Feedback Form</title>
+</head>
+<body>
+  <form onsubmit="submitFeedback(event)">
     <input type="text" id="name" placeholder="Your Name" required />
     <input type="email" id="email" placeholder="Your Email" required />
     <textarea id="feedback" placeholder="Your Feedback" required></textarea>
     <button type="submit">Submit</button>
   </form>
   <p id="responseMessage"></p>
-  
+
   <script>
     function submitFeedback(event) {
       event.preventDefault();
-  
+
       const data = {
         name: document.getElementById('name').value,
         email: document.getElementById('email').value,
         feedback: document.getElementById('feedback').value,
       };
-  
-      fetch('http://localhost:3000/submit-feedback', {
+
+      fetch('/submit-feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -31,4 +37,5 @@
         });
     }
   </script>
-  
+</body>
+</html>

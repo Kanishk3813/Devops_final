@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const cors = require('cors');
+const path = require('path');
 const app = express();
 const PORT = 3000;
 
@@ -10,9 +11,10 @@ const PORT = 3000;
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // File to store feedback
-const FEEDBACK_FILE = 'feedback.json';
+const FEEDBACK_FILE = path.join(__dirname, 'feedback.json');
 
 // Submit feedback
 app.post('/submit-feedback', (req, res) => {
@@ -25,13 +27,11 @@ app.post('/submit-feedback', (req, res) => {
     timestamp: new Date().toISOString(),
   };
 
-  // Read existing data
   let feedbackData = [];
   if (fs.existsSync(FEEDBACK_FILE)) {
     feedbackData = JSON.parse(fs.readFileSync(FEEDBACK_FILE));
   }
 
-  // Add new feedback and save
   feedbackData.push(newFeedback);
   fs.writeFileSync(FEEDBACK_FILE, JSON.stringify(feedbackData, null, 2));
 
@@ -48,5 +48,5 @@ app.get('/feedbacks', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });
