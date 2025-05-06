@@ -1,41 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Feedback Form</title>
-</head>
-<body>
-  <h2>Submit Feedback</h2>
-  <form id="feedbackForm">
-    <input type="text" name="name" placeholder="Your Name" required /><br />
-    <input type="email" name="email" placeholder="Your Email" required /><br />
-    <textarea name="message" placeholder="Your Feedback" required></textarea><br />
+<form onsubmit="submitFeedback(event)">
+    <input type="text" id="name" placeholder="Your Name" required />
+    <input type="email" id="email" placeholder="Your Email" required />
+    <textarea id="feedback" placeholder="Your Feedback" required></textarea>
     <button type="submit">Submit</button>
   </form>
-  <p id="successMessage" style="color: green;"></p>
-
+  <p id="responseMessage"></p>
+  
   <script>
-    const form = document.getElementById('feedbackForm');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(form);
+    function submitFeedback(event) {
+      event.preventDefault();
+  
       const data = {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        message: formData.get('message')
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        feedback: document.getElementById('feedback').value,
       };
-
-      const res = await fetch('/feedback', {
+  
+      fetch('http://localhost:3000/submit-feedback', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-
-      if (res.ok) {
-        document.getElementById('successMessage').innerText = 'Feedback submitted!';
-        form.reset();
-      }
-    });
+        body: JSON.stringify(data),
+      })
+        .then((res) => res.text())
+        .then((msg) => {
+          document.getElementById('responseMessage').innerText = msg;
+        })
+        .catch((err) => {
+          document.getElementById('responseMessage').innerText = 'Error!';
+          console.error(err);
+        });
+    }
   </script>
-</body>
-</html>
+  
