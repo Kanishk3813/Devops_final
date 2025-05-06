@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Feedback Form</title>
+</head>
+<body>
+  <h2>Submit Feedback</h2>
+  <form id="feedbackForm">
+    <input type="text" name="name" placeholder="Your Name" required /><br />
+    <input type="email" name="email" placeholder="Your Email" required /><br />
+    <textarea name="message" placeholder="Your Feedback" required></textarea><br />
+    <button type="submit">Submit</button>
+  </form>
+  <p id="successMessage" style="color: green;"></p>
+
+  <script>
+    const form = document.getElementById('feedbackForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        message: formData.get('message')
+      };
+
+      const res = await fetch('/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        document.getElementById('successMessage').innerText = 'Feedback submitted!';
+        form.reset();
+      }
+    });
+  </script>
+</body>
+</html>
