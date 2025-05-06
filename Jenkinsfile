@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Pull from GitHub') {
       steps {
-        git 'https://github.com/Kanishk3813/Devops_final.git'
+        git branch: 'main', url: 'https://github.com/Kanishk3813/Devops_final.git'
       }
     }
     stage('Build Docker Image') {
