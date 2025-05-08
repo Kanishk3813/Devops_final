@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Pull from GitHub') {
       steps {
-        git branch: 'main', url: 'https://github.com/Kanishk3813/Devops_final.git'
+        git branch: 'main', url: 'https://github.com/Vishrut28/Salesforce-Clone.git'
       }
     }
     stage('Build Docker Image') {
