@@ -14,7 +14,8 @@ pipeline {
     stage('Run Docker Container') {
       steps {
         sh 'docker rm -f salesforce-clone || true'
-        sh 'docker run -d -p 3000:3000 --name salesforce-clone salesforce-clone'
+        sh 'docker run -d -p 3001:80 --name salesforce-clone salesforce-clone
+'
       }
     }
   }
